@@ -1,4 +1,9 @@
 package org.example;
+
+import org.example.refactoring.EmailSender;
+import org.example.refactoring.NotificationSender;
+import org.example.refactoring.NotificationService;
+
 /**
  * Code Smell: Concrete Dependency
  * Category: Dependencies
@@ -23,21 +28,22 @@ package org.example;
  * and to add explicit comments explaining the design flaw.
  */
 
-class EmailSender {
-    public void sendEmail(String recipient, String message) {
-        System.out.println("[EMAIL] Sending to " + recipient + ": " + message);
-    }
-}
+//class EmailSender implements NotificationSender {
+//    @Override
+//    public void sendEmail(String recipient, String message) {
+//        System.out.println("[EMAIL] Sending to " + recipient + ": " + message);
+//    }
+//}
 
-class NotificationService {
-
-    // Concrete dependency (code smell)
-    private EmailSender emailSender = new EmailSender();
-
-    public void notifyUser(String userEmail, String content) {
-        emailSender.sendEmail(userEmail, content);
-    }
-}
+//class NotificationService {
+//
+//    // Concrete dependency (code smell)
+//    private EmailSender emailSender = new EmailSender();
+//
+//    public void notifyUser(String userEmail, String content) {
+//        emailSender.sendEmail(userEmail, content);
+//    }
+//}
 public class Main {
     /**
      * Test method
@@ -45,9 +51,11 @@ public class Main {
      * despite the presence of a design flaw.
      */
     public static void main(String[] args) {
-        NotificationService service = new NotificationService();
 
-        System.out.println("---- Test NotificationService ----");
+        NotificationSender emailSender = new EmailSender();
+        NotificationService service = new NotificationService(emailSender);
+
+        System.out.println("---- Test NotificationService (IntelliJ refactoring) ----");
 
         service.notifyUser("user@example.com", "Bienvenue sur notre plateforme !");
         service.notifyUser("admin@example.com", "Un nouvel utilisateur vient de s'inscrire.");
