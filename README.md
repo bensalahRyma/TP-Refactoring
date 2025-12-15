@@ -61,3 +61,22 @@ class NotificationService {
         emailSender.sendEmail(userEmail, content);
     }
 }
+
+```
+## 4. Organisation du projet
+
+Afin de distinguer clairement la version initiale du programme et la version refactorée,
+le code a été organisé en deux packages distincts :
+
+- `org.example.initial`  
+  Ce package contient la **version initiale** du programme, qui illustre volontairement
+  le code smell *Concrete Dependency*.  
+  Il permet d’analyser le défaut de conception avant l’application des opérations de refactoring.
+
+- `org.example.refactored`  
+  Ce package contient la **version refactorée** du programme, dans laquelle le code smell
+  a été corrigé par l’introduction d’abstractions et l’application du principe d’inversion
+  des dépendances (Dependency Inversion Principle).
+
+Cette organisation facilite la comparaison entre le programme **avant** et **après**
+refactoring, tout en conservant les deux versions à des fins d’analyse et de validation.

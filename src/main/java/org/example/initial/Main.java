@@ -1,8 +1,4 @@
-package org.example;
-
-import org.example.refactoring.EmailSender;
-import org.example.refactoring.NotificationSender;
-import org.example.refactoring.NotificationService;
+package org.example.initial;
 
 /**
  * Code Smell: Concrete Dependency
@@ -28,34 +24,27 @@ import org.example.refactoring.NotificationService;
  * and to add explicit comments explaining the design flaw.
  */
 
-//class EmailSender implements NotificationSender {
-//    @Override
-//    public void sendEmail(String recipient, String message) {
-//        System.out.println("[EMAIL] Sending to " + recipient + ": " + message);
-//    }
-//}
 
-//class NotificationService {
-//
-//    // Concrete dependency (code smell)
-//    private EmailSender emailSender = new EmailSender();
-//
-//    public void notifyUser(String userEmail, String content) {
-//        emailSender.sendEmail(userEmail, content);
-//    }
-//}
+class EmailSender {
+    public void sendEmail(String recipient, String message) {
+        System.out.println("[EMAIL] Sending to " + recipient + ": " + message);
+    }
+}
+
+class NotificationService {
+
+    // Code smell: Dépendance directe à une classe concrète (EmailSender)
+    private EmailSender emailSender = new EmailSender();
+
+    public void notifyUser(String userEmail, String content) {
+        emailSender.sendEmail(userEmail, content);
+    }
+}
 public class Main {
-    /**
-     * Test method
-     * Verifies that NotificationService works correctly
-     * despite the presence of a design flaw.
-     */
     public static void main(String[] args) {
+        NotificationService service = new NotificationService();
 
-        NotificationSender emailSender = new EmailSender();
-        NotificationService service = new NotificationService(emailSender);
-
-        System.out.println("---- Test NotificationService (IntelliJ refactoring) ----");
+        System.out.println("---- Test NotificationService ----");
 
         service.notifyUser("user@example.com", "Bienvenue sur notre plateforme !");
         service.notifyUser("admin@example.com", "Un nouvel utilisateur vient de s'inscrire.");
